@@ -3,13 +3,15 @@ package com.connectMicroService.employeeservice.Controller.advice;
 import com.connectMicroService.employeeservice.Dto.ResponseMessageDto;
 import com.connectMicroService.employeeservice.Exception.ServiceException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import feign.FeignException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -25,6 +27,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
@@ -47,33 +50,33 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(apiError, ex.getHttpStatus());
     }
 
-//    @ExceptionHandler(value = {FeignException.class})
-//    protected ResponseEntity<Object> handleFeignException(FeignException ex) {
-//        log.error("Feign client execution error: ", ex);
-//        ApiError apiError = translate(ex);
-//        return new ResponseEntity<>(apiError, HttpStatus.valueOf(apiError.getStatus()));
-//    }
-//
-//    @ExceptionHandler(ConstraintViolationException.class)
-//    public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex) {
-//        Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
-//        List<String> errorMessages = new ArrayList<>();
-//        for (ConstraintViolation<?> violation : violations) {
-//            errorMessages.add(violation.getMessage());
-//        }
-//        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST.value(),"Bad request",errorMessages);
-//        return new ResponseEntity<>(apiError,HttpStatus.BAD_REQUEST);
-//    }
-//
-//    private ApiError translate(FeignException ex) {
-//        try {
-//            int i = ex.getMessage().indexOf("{\"status");
-//            String substring = ex.getMessage().substring(i, ex.getMessage().length() - 1);
-//            return objectMapper.readValue(substring, ApiError.class);
-//        } catch (Exception e) {
-//            return new ApiError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Error", List.of("Internal Service Exception"));
-//        }
-//    }
+    @ExceptionHandler(value = {FeignException.class})
+    protected ResponseEntity<Object> handleFeignException(FeignException ex) {
+        log.error("Feign client execution error: ", ex);
+        ApiError apiError = translate(ex);
+        return new ResponseEntity<>(apiError, HttpStatus.valueOf(apiError.getStatus()));
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex) {
+        Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
+        List<String> errorMessages = new ArrayList<>();
+        for (ConstraintViolation<?> violation : violations) {
+            errorMessages.add(violation.getMessage());
+        }
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST.value(),"Bad request",errorMessages);
+        return new ResponseEntity<>(apiError,HttpStatus.BAD_REQUEST);
+    }
+
+    private ApiError translate(FeignException ex) {
+        try {
+            int i = ex.getMessage().indexOf("{\"status");
+            String substring = ex.getMessage().substring(i, ex.getMessage().length() - 1);
+            return objectMapper.readValue(substring, ApiError.class);
+        } catch (Exception e) {
+            return new ApiError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Error", List.of("Internal Service Exception"));
+        }
+    }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
