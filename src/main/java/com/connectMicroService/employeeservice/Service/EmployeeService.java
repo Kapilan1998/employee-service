@@ -15,6 +15,6 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
 
     public Employee getEmployeeDetails(int id) {
-        return employeeRepository.findById(id).orElseThrow(() -> new ServiceException("employee not found","Bad request", HttpStatus.BAD_REQUEST));
+        return employeeRepository.findById(id).orElseThrow(() -> new ServiceException("employee not found", "Bad request", HttpStatus.BAD_REQUEST));
     }
 }
