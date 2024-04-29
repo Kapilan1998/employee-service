@@ -3,7 +3,6 @@ package com.connectMicroService.employeeservice.Converter;
 import com.connectMicroService.employeeservice.Dto.EmployeeDto;
 import com.connectMicroService.employeeservice.Entity.Employee;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
