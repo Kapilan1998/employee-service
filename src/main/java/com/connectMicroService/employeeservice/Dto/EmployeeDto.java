@@ -9,4 +9,6 @@ public class EmployeeDto {
     private String name;
     private String email;
     private String bloodGroup;
+    private AddressResponseDto addressResponseDto;
+    15.00
 }
