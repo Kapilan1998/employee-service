@@ -10,5 +10,4 @@ public class EmployeeDto {
     private String email;
     private String bloodGroup;
     private AddressResponseDto addressResponseDto;
-    15.00
 }
