@@ -25,7 +25,6 @@ public class EmployeeConverter {
 
         EmployeeDto employeeDto = new EmployeeDto();
         employeeDto.setId(employee.getId());
-        log.info("id here ...  "+employee.getId());
         employeeDto.setName(employee.getName());
         employeeDto.setEmail(employee.getEmail());
         employeeDto.setBloodGroup(employee.getBloodGroup());
