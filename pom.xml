@@ -78,6 +78,18 @@
 			<version>3.2.0</version>
 		</dependency>
 
+		<!--		Spring WebFlux allows you to build non-blocking(asynchronous), reactive web applications using the Reactor project's reactive streams API-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+
+		<!--		provides utilities for testing reactive code, ensuring the reliability and correctness of the application.-->
+		<dependency>
+			<groupId>io.projectreactor</groupId>
+			<artifactId>reactor-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
